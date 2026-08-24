@@ -20,10 +20,10 @@ export interface MenuItem {
 }
 
 export const MENU_ITEMS: MenuItem[] = [
-  { id: 'process', label: 'OUR PROCESS', subtitle: 'A-to-Z Manufacturing Pipeline & Quality Metrics' },
-  { id: 'collections', label: 'COLLECTIONS', subtitle: 'Sample Garment Lines, Heavyweights & Tech Packs' },
+  { id: 'services', label: 'SERVICES', subtitle: 'A-to-Z Manufacturing Pipeline & Quality Metrics' },
+  { id: 'collections', label: 'PROJECTS', subtitle: 'Sample Garment Lines, Heavyweights & Tech Packs' },
   { id: 'capabilities', label: 'CAPABILITIES', subtitle: 'Capacity, Laser CNC, Custom Dye & Machinery Specs' },
-  { id: 'sustainability', label: 'SUSTAINABILITY', subtitle: 'Closed-Loop Dyeing, GOTS Cotton & Zero Waste' },
+  // { id: 'sustainability', label: 'SUSTAINABILITY', subtitle: 'Closed-Loop Dyeing, GOTS Cotton & Zero Waste' },
   { id: 'contact', label: 'CONTACT', subtitle: 'Inquire Production Slot / Request Tech Pack Quote' },
 ];
 

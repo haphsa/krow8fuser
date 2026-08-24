@@ -20,12 +20,27 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
   const handleSubmitQuote = (e: React.FormEvent) => {
     e.preventDefault();
     sfx.playSelect();
+
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const subject = `Production Quote Request - ${formData.get('company')}`;
+    const body = [
+      `Brand / Company: ${formData.get('company')}`,
+      `Contact Email: ${formData.get('email')}`,
+      `Phone Number: ${formData.get('phone')}`,
+      `Target Quantity: ${formData.get('quantity')}`,
+      `Tech Pack Status: ${formData.get('techPackStatus')}`,
+      '',
+      'Garment Specs & Notes:',
+      formData.get('notes')
+    ].join('\n');
+
+    window.location.href = `mailto:krow8industries@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setFormSubmitted(true);
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in pointer-events-auto">
-      <div className="relative w-full max-w-3xl max-h-[88dvh] sm:max-h-[85vh] overflow-y-auto bg-[#0C0F0E] border-2 border-[#00FFC2] rounded-xl sm:rounded-2xl p-4 sm:p-8 text-[#EAEFEA] shadow-[0_0_50px_rgba(0,255,194,0.3)]">
+      <div className="relative w-full max-w-3xl max-h-[calc(100dvh-1.5rem)] sm:max-h-[90vh] overflow-y-auto overscroll-contain scrollbar-none bg-[#0C0F0E] border-2 border-[#00FFC2] rounded-xl sm:rounded-2xl p-4 pb-8 sm:p-7 sm:pb-9 text-[#EAEFEA] shadow-[0_0_50px_rgba(0,255,194,0.3)]">
         {/* Cyber-Gothic Corner HUD Accent Brackets */}
         <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#00FFC2]" />
         <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#00FFC2]" />
@@ -60,40 +75,42 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
         </div>
 
         {/* Modal Content Sections */}
-        {item.id === 'process' &&
+        {item.id === 'services' &&
         <div className="space-y-4">
             <h3 data-fuser-slot-id="section-title-064898b9" className="text-sm font-mono text-[#00FFC2] uppercase tracking-wider">
-              // 4-STAGE PRECISION MANUFACTURING PIPELINE
+              // SPECIALIZED GARMENT DECORATION & FINISHING
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-black/60 border border-[#00FFC2]/20 hover:border-[#00FFC2]/60 transition-colors">
-                <div data-fuser-slot-id="section-text-25bc79cb" className="text-xs font-mono text-[#00FFC2] mb-1">STAGE 01</div>
-                <div data-fuser-slot-id="section-text-f2437b2e" className="font-tech font-bold text-lg mb-1">CAD & Laser Pattern Cut</div>
-                <div data-fuser-slot-id="section-text-29d8bc28" className="text-xs text-[#EAEFEA]/70">
-                  Digital Tech Pack ingestion with zero-waste laser fabric cutting nesting.
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {[
+                ['DTF', 'Direct-to-film transfers'],
+                ['DTG', 'Direct-to-garment printing'],
+                ['EMBROIDERY', 'Raised thread artwork'],
+                ['EMBOSSING', 'Pressed dimensional designs'],
+                ['DENIMWORK', 'Custom denim detailing'],
+                ['LEATHERWORK', 'Leather patches and trims'],
+                ['CHAINSTITCHING', 'Decorative chain stitching'],
+                ['SUBLIMATION', 'Dye-infused all-over prints'],
+                ['RHINESTONE WORK', 'Premium crystal embellishment'],
+                ['ACID WASHING', 'Vintage garment wash effects'],
+                ['KNITTING', 'Custom knit construction'],
+                ['CAMO', 'Custom camouflage patterns']
+              ].map(([service, description], index) =>
+              <div
+                key={service}
+                className="p-4 rounded-xl bg-black/60 border border-[#00FFC2]/20 hover:border-[#00FFC2]/60 transition-colors"
+              >
+                <div className="flex items-baseline gap-2 mb-1">
+                  <span className="text-xs font-mono text-[#00FFC2]">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="font-tech font-bold text-sm sm:text-base">
+                    {service}
+                  </div>
                 </div>
-              </div>
-              <div className="p-4 rounded-xl bg-black/60 border border-[#00FFC2]/20 hover:border-[#00FFC2]/60 transition-colors">
-                <div data-fuser-slot-id="section-text-1a611775" className="text-xs font-mono text-[#00FFC2] mb-1">STAGE 02</div>
-                <div data-fuser-slot-id="section-text-c16b1b04" className="font-tech font-bold text-lg mb-1">Lockstitch & Assembly</div>
-                <div data-fuser-slot-id="section-text-a3be7770" className="text-xs text-[#EAEFEA]/70">
-                  Automated double-needle stitching, flatlock seam reinforcement & hardware.
+                <div className="text-[11px] text-[#EAEFEA]/60 leading-relaxed">
+                  {description}
                 </div>
-              </div>
-              <div className="p-4 rounded-xl bg-black/60 border border-[#00FFC2]/20 hover:border-[#00FFC2]/60 transition-colors">
-                <div data-fuser-slot-id="section-text-0568b54c" className="text-xs font-mono text-[#00FFC2] mb-1">STAGE 03</div>
-                <div data-fuser-slot-id="section-text-3d283dd1" className="font-tech font-bold text-lg mb-1">Custom Dye & Wash Lab</div>
-                <div data-fuser-slot-id="section-text-03615ac2" className="text-xs text-[#EAEFEA]/70">
-                  Pantone color matching, acid wash, pigment vintage dyes & silicone softening.
-                </div>
-              </div>
-              <div className="p-4 rounded-xl bg-black/60 border border-[#00FFC2]/20 hover:border-[#00FFC2]/60 transition-colors">
-                <div data-fuser-slot-id="section-text-8ae90932" className="text-xs font-mono text-[#00FFC2] mb-1">STAGE 04</div>
-                <div data-fuser-slot-id="section-text-035b03e9" className="font-tech font-bold text-lg mb-1">QC Inspection & Polybag</div>
-                <div data-fuser-slot-id="section-text-e2660a45" className="text-xs text-[#EAEFEA]/70">
-                  6-point manual quality check, custom neck labels, hangtags & eco-packaging.
-                </div>
-              </div>
+              </div>)}
             </div>
           </div>
         }
@@ -199,28 +216,43 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
               </div> :
 
           <form onSubmit={handleSubmitQuote} className="space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
                   <div>
                     <label data-fuser-slot-id="section-label-e80fdbfd" className="block text-xs font-mono text-[#EAEFEA]/70 mb-1">
-                      Brand / Company Name
+                      Organization Name
                     </label>
                     <input
                   type="text"
+                  name="company"
                   required
-                  placeholder="e.g. ACOLYTE APPAREL"
+                  placeholder="e.g. KROW8 APPAREL"
                   className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none" />
                 
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label data-fuser-slot-id="section-label-phone" className="block text-xs font-mono text-[#EAEFEA]/70 mb-1">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      required
+                      placeholder="e.g. +1 555 123 4567"
+                      className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none" />
                   </div>
                   <div>
                     <label data-fuser-slot-id="section-label-455ba91e" className="block text-xs font-mono text-[#EAEFEA]/70 mb-1">
                       Contact Email
                     </label>
                     <input
-                  type="email"
-                  required
-                  placeholder="you@brand.com"
-                  className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none" />
-                
+                      type="email"
+                      name="email"
+                      required
+                      placeholder="you@brand.com"
+                      className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none" />
                   </div>
                 </div>
 
@@ -229,11 +261,13 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
                     <label data-fuser-slot-id="section-label-85c635e8" className="block text-xs font-mono text-[#EAEFEA]/70 mb-1">
                       Target Quantity (MOQ 100)
                     </label>
-                    <select className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none">
+                    <select name="quantity" className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none">
+                      <option>1 &lt;sample&gt;</option>
                       <option>100 - 300 units</option>
                       <option>300 - 1,000 units</option>
                       <option>1,000 - 5,000 units</option>
                       <option>5,000+ units</option>
+                      <option> &lt;specify in notes&gt; </option>
                     </select>
                   </div>
                   <div>
@@ -241,10 +275,11 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
                       Tech Pack Status
                     </label>
                     <select
+                  name="techPackStatus"
                   onChange={(e) => setTechPackFile(e.target.value)}
                   className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none">
                   
-                      <option value="">Ready to Upload (PDF/AI)</option>
+                      <option value="">Ready to Upload </option>
                       <option value="concept">Concept Stage / Need Design Help</option>
                       <option value="sample">Sample Garment Existing</option>
                     </select>
@@ -256,8 +291,9 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
                     Garment Specs & Notes
                   </label>
                   <textarea
+                name="notes"
                 rows={2}
-                placeholder="Describe GSM, fabric blend, wash effects, cut (e.g. oversized drop-shoulder)..."
+                placeholder="tell us about your garment specs and any special requirements..."
                 className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none" />
               
                 </div>

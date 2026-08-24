@@ -13,7 +13,7 @@ export const MenuSidebar: React.FC<MenuSidebarProps> = ({
 }) => {
   return (
     <div className="absolute left-0 top-1/2 z-20 flex w-full max-w-lg -translate-y-1/2 flex-col justify-center px-4 py-1 pointer-events-auto sm:px-10 sm:py-2 md:px-12">
-      
+      {/* Game Title - "BUILT THREAD BY THREAD" */}
       <div className="mb-1.5 sm:mb-3 flex flex-col tracking-tight leading-none relative">
         <h1 data-fuser-slot-id="section-title-165f85af" className="font-display italic font-black text-2xl xs:text-3xl sm:text-5xl md:text-6xl text-white uppercase select-none tracking-tighter drop-shadow-[0_0_12px_rgba(0,255,194,0.25)]">
           krow8
@@ -73,7 +73,7 @@ export const MenuSidebar: React.FC<MenuSidebarProps> = ({
 
                 {/* Menu Label */}
                 <span
-                  data-fuser-slot-id={{ "process": "section-text-9c0cd7e7", "collections": "section-text-7fff61ca", "capabilities": "section-text-9a2a2fdc", "sustainability": "section-text-3dcc310a", "contact": "section-text-734e7922" }[item.id]}
+                  data-fuser-slot-id={{ "services": "section-text-9c0cd7e7", "collections": "section-text-7fff61ca", "capabilities": "section-text-9a2a2fdc", "sustainability": "section-text-3dcc310a", "contact": "section-text-734e7922" }[item.id]}
 
 
 
