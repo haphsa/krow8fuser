@@ -12,24 +12,22 @@ export const MenuSidebar: React.FC<MenuSidebarProps> = ({
   onSelectMenu
 }) => {
   return (
-    <div className="relative z-20 flex flex-col justify-center px-4 sm:px-10 md:px-12 max-w-lg w-full pointer-events-auto my-auto py-1 sm:py-2">
-      {/* Game Title - "BUILT THREAD BY THREAD" */}
+    <div className="absolute left-0 top-1/2 z-20 flex w-full max-w-lg -translate-y-1/2 flex-col justify-center px-4 py-1 pointer-events-auto sm:px-10 sm:py-2 md:px-12">
+      
       <div className="mb-1.5 sm:mb-3 flex flex-col tracking-tight leading-none relative">
         <h1 data-fuser-slot-id="section-title-165f85af" className="font-display italic font-black text-2xl xs:text-3xl sm:text-5xl md:text-6xl text-white uppercase select-none tracking-tighter drop-shadow-[0_0_12px_rgba(0,255,194,0.25)]">
-          BUILT
+          krow8
         </h1>
         <h1 data-fuser-slot-id="section-title-ba93c014" className="font-display italic font-black text-2xl xs:text-3xl sm:text-5xl md:text-6xl text-white uppercase select-none tracking-tighter drop-shadow-[0_0_12px_rgba(0,255,194,0.25)]">
-          THREAD
+         INDUSTRIES
         </h1>
-        <h1 data-fuser-slot-id="section-title-36dd8f48" className="font-display italic font-black text-2xl xs:text-3xl sm:text-5xl md:text-6xl text-white uppercase select-none tracking-tighter drop-shadow-[0_0_12px_rgba(0,255,194,0.25)]">
-          BY THREAD
-        </h1>
+       
       </div>
 
       {/* Subtitle in High-Contrast Tactical Cyber Styling */}
       <div className="mb-2 sm:mb-5 font-mono text-[10px] sm:text-xs tracking-widest text-[#EAEFEA]/90 font-bold uppercase leading-relaxed max-w-xs sm:max-w-sm border-l-2 border-[#00FFC2] pl-2 sm:pl-3 py-0.5">
         <span data-fuser-slot-id="section-text-0b6c9533" className="text-black bg-[#00FFC2] px-1 sm:px-1.5 py-0.5 rounded-xs mr-1.5 sm:mr-2 font-mono text-[9px] sm:text-[10px] font-bold">
-          THREAD CO.
+         PAKISTAN BASED
         </span>
         CLOTHING MANUFACTURING
         <br />

@@ -29,7 +29,7 @@ function LoadingMenuApp() {
   };
 
   return (
-    <div className="relative h-screen h-[100dvh] w-screen max-h-screen max-w-screen overflow-hidden bg-[#080A0B] text-[#EAEFEA] flex flex-col justify-between select-none font-sans">
+    <div className="relative h-screen h-[100dvh] min-h-0 w-full overflow-hidden bg-[#080A0B] text-[#EAEFEA] select-none font-sans">
       {/* Dynamic Background Video/Image Stream Viewport */}
       <BackgroundViewport currentFeed={currentFeed} isPlaying={true} />
 

@@ -22,7 +22,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ muted, onToggleMute }) => 
   };
 
   return (
-    <div className="relative z-20 flex items-center justify-between px-3 sm:px-8 py-2.5 sm:py-6 w-full pointer-events-auto">
+    <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-8 py-2.5 sm:py-6 w-full pointer-events-auto">
       {/* Top Left Gothic & Cyber Bar Glyphs */}
       <div className="flex items-center gap-2 sm:gap-3 text-[#00FFC2]">
         <div className="flex items-center gap-1">
@@ -31,7 +31,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ muted, onToggleMute }) => 
           <div className="w-1 sm:w-1.5 h-4 sm:h-6 bg-[#00FFC2] rounded-xs shadow-[0_0_10px_#00FFC2]" />
         </div>
         <span data-fuser-slot-id="section-text-d5728ee8" className="font-mono text-[10px] sm:text-xs text-[#121514] font-bold tracking-widest uppercase bg-[#00FFC2] px-1.5 sm:px-2 py-0.5 rounded-sm">
-          THREAD CO. // SYSTEM v2.0
+          KROW8 CO. // SYSTEM v2.0
         </span>
       </div>
 

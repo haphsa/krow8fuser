@@ -15,7 +15,7 @@ export const FeedSelector: React.FC<FeedSelectorProps> = ({
   const activeIndex = FACTORY_FEEDS.findIndex((f) => f.id === currentFeed.id);
 
   return (
-    <div className="relative z-20 w-full px-4 sm:px-8 pb-4 pt-2 flex flex-col gap-2 pointer-events-auto mt-auto">
+    <div className="absolute inset-x-0 bottom-0 z-20 flex w-full flex-col gap-2 px-4 pb-4 pt-2 pointer-events-auto sm:px-8">
       {/* 6 Video Process Stream Thumbnails Bar */}
       <div className="flex overflow-x-auto sm:grid sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 w-full pb-1 sm:pb-0 scrollbar-none snap-x snap-mandatory">
         {FACTORY_FEEDS.map((feed) => {
