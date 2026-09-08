@@ -24,8 +24,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ muted, onToggleMute }) => 
         </span>
       </div>
 
-      {/* Top Right Controls */}
-      <div className="flex items-center gap-2 sm:gap-3 text-[#00FFC2] ">
+      {/* Bottom Left Social Controls */}
+      <div className="fixed bottom-3 left-3 z-30 flex items-center gap-2 text-[#00FFC2] sm:bottom-6 sm:left-8 sm:gap-3">
         <a
           href={instagramUrl}
           target="_blank"
