@@ -14,28 +14,36 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
 }) => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [techPackFile, setTechPackFile] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   if (!item) return null;
 
-  const handleSubmitQuote = (e: React.FormEvent) => {
+  const handleSubmitQuote = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     sfx.playSelect();
+    const form = e.currentTarget;
+    setIsSubmitting(true);
+    setSubmitError(null);
 
-    const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const subject = `Production Quote Request - ${formData.get('company')}`;
-    const body = [
-      `Brand / Company: ${formData.get('company')}`,
-      `Contact Email: ${formData.get('email')}`,
-      `Phone Number: ${formData.get('phone')}`,
-      `Target Quantity: ${formData.get('quantity')}`,
-      `Tech Pack Status: ${formData.get('techPackStatus')}`,
-      '',
-      'Garment Specs & Notes:',
-      formData.get('notes')
-    ].join('\n');
-
-    window.location.href = `mailto:krow8industries@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setFormSubmitted(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form).entries()))
+      });
+      if (!response.ok) {
+        const result = await response.json().catch(() => null);
+        throw new Error(result?.message || 'Unable to send your message. Please try again.');
+      }
+      form.reset();
+      setTechPackFile(null);
+      setFormSubmitted(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Unable to send your message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -202,7 +210,7 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
           <div className="p-6 rounded-xl bg-[#00FFC2]/10 border border-[#00FFC2] text-center space-y-3">
                 <Check className="w-10 h-10 text-[#00FFC2] mx-auto" />
                 <div data-fuser-slot-id="section-text-c7c7a103" className="font-tech font-bold text-xl text-[#00FFC2]">
-                  PRODUCTION SLOT INQUIRY RECEIVED
+                  THANKS! YOUR MESSAGE HAS BEEN SENT.
                 </div>
                 <p data-fuser-slot-id="section-body-05e4dfd9" className="text-sm text-[#EAEFEA]/80 max-w-md mx-auto">
                   Our garment engineers will review your Tech Pack specs and send a custom quote within 24 hours.
@@ -216,6 +224,11 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
               </div> :
 
           <form onSubmit={handleSubmitQuote} className="space-y-3">
+                {submitError && <div role="alert" className="rounded-lg border border-red-400/60 bg-red-500/10 px-3 py-2 text-sm text-red-200">{submitError}</div>}
+                <div>
+                  <label className="block text-xs font-mono text-[#EAEFEA]/70 mb-1">Your Name</label>
+                  <input type="text" name="name" required placeholder="e.g. Alex Smith" className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none" />
+                </div>
                 <div>
                   <div>
                     <label data-fuser-slot-id="section-label-e80fdbfd" className="block text-xs font-mono text-[#EAEFEA]/70 mb-1">
@@ -300,11 +313,12 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
 
                 <button data-fuser-slot-id="section-button-text-790123c5"
             type="submit"
+            disabled={isSubmitting}
             onMouseEnter={() => sfx.playHover()}
-            className="w-full py-3 rounded-xl bg-[#00FFC2] text-black font-tech font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#00FFC2]/90 transition-all shadow-[0_0_20px_rgba(0,255,194,0.4)] cursor-pointer">
+            className="w-full py-3 rounded-xl bg-[#00FFC2] text-black font-tech font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#00FFC2]/90 transition-all shadow-[0_0_20px_rgba(0,255,194,0.4)] cursor-pointer disabled:cursor-not-allowed disabled:opacity-60">
               
                   <Send className="w-4 h-4" />
-                  REQUEST PRODUCTION QUOTE
+                  {isSubmitting ? 'SENDING...' : 'REQUEST PRODUCTION QUOTE'}
                 </button>
               </form>
           }
