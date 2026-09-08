@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import { FACTORY_FEEDS, FeedItem, MenuItem } from './components/Data';
+import { FACTORY_FEEDS, FeedItem, MENU_ITEMS, MenuItem } from './components/Data';
 import { BackgroundViewport } from './components/BackgroundViewport';
 import { HeaderNav } from './components/HeaderNav';
 import { MenuSidebar } from './components/MenuSidebar';
 import { FeedSelector } from './components/FeedSelector';
 import { InteractiveHudModal } from './components/InteractiveHudModal';
+import { GarmentCarouselPage } from './components/GarmentCarouselPage';
 import { sfx } from './components/AudioSystem';
 
 function LoadingMenuApp() {
   const [currentFeed, setCurrentFeed] = useState<FeedItem>(FACTORY_FEEDS[0]);
   const [activeMenuId, setActiveMenuId] = useState<string>('process');
   const [activeModalItem, setActiveModalItem] = useState<MenuItem | null>(null);
+  const [showProjects, setShowProjects] = useState<boolean>(false);
   const [muted, setMuted] = useState<boolean>(false);
 
   const handleToggleMute = () => {
@@ -25,8 +27,26 @@ function LoadingMenuApp() {
 
   const handleSelectMenu = (item: MenuItem) => {
     setActiveMenuId(item.id);
+    if (item.id === 'collections') {
+      setActiveModalItem(null);
+      setShowProjects(true);
+      return;
+    }
+    setShowProjects(false);
     setActiveModalItem(item);
   };
+
+  if (showProjects) {
+    return (
+      <GarmentCarouselPage
+        onBack={() => setShowProjects(false)}
+        onRequestQuote={() => {
+          setShowProjects(false);
+          setActiveMenuId('contact');
+          setActiveModalItem(MENU_ITEMS.find((item) => item.id === 'contact') || null);
+        }} />
+    );
+  }
 
   return (
     <div className="relative h-screen h-[100dvh] min-h-0 w-full overflow-hidden bg-[#080A0B] text-[#EAEFEA] select-none font-sans">
