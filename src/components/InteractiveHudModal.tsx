@@ -259,7 +259,7 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label data-fuser-slot-id="section-label-85c635e8" className="block text-xs font-mono text-[#EAEFEA]/70 mb-1">
-                      Target Quantity (MOQ 100)
+                      Target Quantity 
                     </label>
                     <select name="quantity" className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none">
                       <option>1 &lt;sample&gt;</option>

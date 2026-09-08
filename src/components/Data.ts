@@ -20,7 +20,7 @@ export interface MenuItem {
 }
 
 export const MENU_ITEMS: MenuItem[] = [
-  { id: 'services', label: 'SERVICES', subtitle: 'A-to-Z Manufacturing Pipeline & Quality Metrics' },
+  { id: 'services', label: 'SERVICES', subtitle: 'Full-Spectrum Apparel Manufacturing & Decoration. One Complete Production Partner' },
   { id: 'collections', label: 'PROJECTS', subtitle: 'Sample Garment Lines, Heavyweights & Tech Packs' },
   { id: 'capabilities', label: 'CAPABILITIES', subtitle: 'Capacity, Laser CNC, Custom Dye & Machinery Specs' },
   // { id: 'sustainability', label: 'SUSTAINABILITY', subtitle: 'Closed-Loop Dyeing, GOTS Cotton & Zero Waste' },
