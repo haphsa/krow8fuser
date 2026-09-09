@@ -13,7 +13,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ muted, onToggleMute }) => 
   return (
     <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-8 py-2.5 sm:py-6 w-full pointer-events-auto">
       {/* Top Left Gothic & Cyber Bar Glyphs */}
-      <div className="flex items-center gap-2 sm:gap-3 text-[#00FFC2]">
+      <div className="flex translate-y-1 items-center gap-2 text-[#00FFC2] sm:translate-y-3 sm:gap-3">
         <div className="flex items-center gap-1">
           <div className="w-1 sm:w-1.5 h-4 sm:h-6 bg-[#00FFC2] rounded-xs shadow-[0_0_10px_#00FFC2]" />
           <div className="w-1 sm:w-1.5 h-4 sm:h-6 bg-[#00FFC2] rounded-xs shadow-[0_0_10px_#00FFC2]" />

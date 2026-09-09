@@ -35,7 +35,7 @@ export const MenuSidebar: React.FC<MenuSidebarProps> = ({
       </div>
 
       {/* Interactive Loading Menu Options */}
-      <div className="flex flex-col gap-1.5 sm:gap-2.5 max-w-sm sm:max-w-md w-full">
+      <div className="flex w-full max-w-[20rem] flex-col gap-2 sm:max-w-md sm:gap-2.5">
         {MENU_ITEMS.map((item) => {
           const isActive = item.id === activeMenuId;
 
@@ -47,7 +47,7 @@ export const MenuSidebar: React.FC<MenuSidebarProps> = ({
                 onSelectMenu(item);
               }}
               onMouseEnter={() => sfx.playHover()}
-              className={`group relative flex items-center justify-between px-3 sm:px-4 py-1.5 sm:py-3 rounded-full transition-all duration-300 cursor-pointer text-left focus:outline-none ${
+              className={`group relative flex min-h-10 items-center justify-between rounded-full px-4 py-2 text-left transition-all duration-300 cursor-pointer focus:outline-none sm:px-4 sm:py-3 ${
               isActive ?
               'border-2 border-[#00FFC2] bg-[#0A0D0F] text-[#00FFC2] shadow-[0_0_20px_rgba(0,255,194,0.35)] scale-[1.01] sm:scale-[1.02]' :
               'border border-[#00FFC2]/20 hover:border-[#00FFC2] bg-[#0A0D0F]/80 text-[#EAEFEA] hover:text-[#00FFC2] backdrop-blur-md'}`
