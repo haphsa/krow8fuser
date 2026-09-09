@@ -67,13 +67,13 @@ export const BackgroundViewport: React.FC<BackgroundViewportProps> = ({
 
       {/* High-Tech Tactical Grid & Target HUD Backdrop Graphic */}
       <div className="absolute right-12 top-1/2 -translate-y-1/2 w-80 sm:w-96 h-[400px] opacity-20 pointer-events-none flex items-center justify-center">
-        <svg viewBox="0 0 300 300" fill="none" className="w-full h-full text-[#00FFC2] filter drop-shadow-[0_0_12px_#00FFC2]">
-          <circle cx="150" cy="150" r="130" stroke="currentColor" strokeWidth="1" strokeDasharray="6 4" />
-          <circle cx="150" cy="150" r="90" stroke="currentColor" strokeWidth="1.5" />
-          <circle cx="150" cy="150" r="45" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
-          <line x1="150" y1="10" x2="150" y2="290" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
-          <line x1="10" y1="150" x2="290" y2="150" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
-          <rect x="130" y="130" width="40" height="40" stroke="currentColor" strokeWidth="1.5" fill="none" />
+        <svg viewBox="0 0 300 300" fill="none" className="aim-drift w-full h-full text-red-600 filter drop-shadow-[0_0_12px_#DC2626]">
+          <circle cx="150" cy="150" r="130" stroke="currentColor" strokeWidth="2" strokeDasharray="6 4" />
+          <circle cx="150" cy="150" r="90" stroke="currentColor" strokeWidth="2.5" />
+          <circle cx="150" cy="150" r="45" stroke="currentColor" strokeWidth="2" strokeDasharray="3 3" />
+          <line x1="150" y1="10" x2="150" y2="290" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
+          <line x1="10" y1="150" x2="290" y2="150" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
+          <rect x="130" y="130" width="40" height="40" stroke="currentColor" strokeWidth="2.5" fill="none" />
         </svg>
       </div>
 

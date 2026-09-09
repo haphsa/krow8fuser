@@ -20,7 +20,18 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ muted, onToggleMute }) => 
           <div className="w-1 sm:w-1.5 h-4 sm:h-6 bg-[#00FFC2] rounded-xs shadow-[0_0_10px_#00FFC2]" />
         </div>
         <span data-fuser-slot-id="section-text-d5728ee8" className="font-mono text-[10px] sm:text-xs text-[#121514] font-bold tracking-widest uppercase bg-[#00FFC2] px-1.5 sm:px-2 py-0.5 rounded-sm">
-          KROW8 CO. // SYSTEM v2.0
+          WEBSITE DESGINED BY //{' '}
+          <a
+            href={'https://wa.me/923216422916?text=' + encodeURIComponent('Hey! I am interested in your web design & development services.')}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => sfx.playSelect()}
+            onMouseEnter={() => sfx.playHover()}
+            className="text-red-600 underline decoration-red-600/70 underline-offset-2 transition-colors hover:text-red-800"
+            aria-label="Chat with Hafsa on WhatsApp"
+          >
+            HAFSA
+          </a>{' '}\\
         </span>
       </div>
 
