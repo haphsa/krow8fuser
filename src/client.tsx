@@ -7,6 +7,7 @@ import { HeaderNav } from './components/HeaderNav';
 import { MenuSidebar } from './components/MenuSidebar';
 import { FeedSelector } from './components/FeedSelector';
 import { InteractiveHudModal } from './components/InteractiveHudModal';
+import { TrackOrderModal } from './components/TrackOrderModal';
 import { GarmentCarouselPage } from './components/GarmentCarouselPage';
 import { sfx } from './components/AudioSystem';
 
@@ -15,6 +16,7 @@ function LoadingMenuApp() {
   const [activeMenuId, setActiveMenuId] = useState<string>('process');
   const [activeModalItem, setActiveModalItem] = useState<MenuItem | null>(null);
   const [showProjects, setShowProjects] = useState<boolean>(false);
+  const [showTrackOrder, setShowTrackOrder] = useState<boolean>(false);
   const [muted, setMuted] = useState<boolean>(false);
 
   const handleToggleMute = () => {
@@ -26,6 +28,7 @@ function LoadingMenuApp() {
   };
 
   const handleSelectMenu = (item: MenuItem) => {
+    setShowTrackOrder(false);
     setActiveMenuId(item.id);
     if (item.id === 'collections') {
       setActiveModalItem(null);
@@ -65,6 +68,7 @@ function LoadingMenuApp() {
       <MenuSidebar
         activeMenuId={activeMenuId}
         onSelectMenu={handleSelectMenu}
+        onTrackOrder={() => setShowTrackOrder(true)}
       />
 
       {/* Bottom Process Stream Thumbnails Bar & Timeline Slider */}
@@ -77,6 +81,10 @@ function LoadingMenuApp() {
       <InteractiveHudModal
         item={activeModalItem}
         onClose={() => setActiveModalItem(null)}
+      />
+      <TrackOrderModal
+        isOpen={showTrackOrder}
+        onClose={() => setShowTrackOrder(false)}
       />
     </div>
   );

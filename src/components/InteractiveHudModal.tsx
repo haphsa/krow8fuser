@@ -9,6 +9,7 @@ interface InteractiveHudModalProps {
 }
 
 type RequiredField = 'company' | 'phone' | 'email';
+const submissionErrorMessage = "Sorry, your form wasnt submitted due to technical issues at the moment. You can email us directly at krow8industries@gmail.com while we fix this :)";
 
 export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
   item,
@@ -56,7 +57,7 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
     const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
     if (!accessKey) {
-      setFormError('The inquiry service is not configured. Please try again later.');
+      setFormError(submissionErrorMessage);
       setIsSubmitting(false);
       return;
     }
@@ -78,8 +79,8 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
       }
 
       setFormSubmitted(true);
-    } catch (error) {
-      setFormError(error instanceof Error ? error.message : 'Unable to submit inquiry. Please try again.');
+    } catch {
+      setFormError(submissionErrorMessage);
     } finally {
       setIsSubmitting(false);
     }

@@ -5,11 +5,13 @@ import { sfx } from './AudioSystem';
 interface MenuSidebarProps {
   activeMenuId: string;
   onSelectMenu: (item: MenuItem) => void;
+  onTrackOrder: () => void;
 }
 
 export const MenuSidebar: React.FC<MenuSidebarProps> = ({
   activeMenuId,
-  onSelectMenu
+  onSelectMenu,
+  onTrackOrder
 }) => {
   return (
     <div className="absolute left-0 top-1/2 z-20 flex w-full max-w-lg -translate-y-1/2 flex-col justify-center px-4 py-1 pointer-events-auto sm:px-10 sm:py-2 md:px-12">
@@ -99,6 +101,31 @@ export const MenuSidebar: React.FC<MenuSidebarProps> = ({
 
         })}
       </div>
+      <button
+        type="button"
+        onClick={() => {
+          sfx.playSelect();
+          onTrackOrder();
+        }}
+        onMouseEnter={() => sfx.playHover()}
+        className="group relative mt-2 flex min-h-10 w-full max-w-[20rem] cursor-pointer items-center justify-between rounded-full border border-[#00FFC2]/20 bg-[#0A0D0F]/80 px-4 py-2 text-left text-[#EAEFEA] backdrop-blur-md transition-all hover:border-[#00FFC2] hover:text-[#00FFC2] focus:outline-none sm:mt-2.5 sm:max-w-md sm:py-3"
+      >
+        <span className="flex items-center gap-2 sm:gap-3">
+          <svg
+            className="h-3.5 w-3.5 shrink-0 text-[#00FFC2]/60 transition-all duration-300 group-hover:rotate-45 group-hover:text-[#00FFC2] sm:h-4 sm:w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
+            <line x1="12" y1="2" x2="12" y2="22" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <circle cx="12" cy="12" r="6" />
+          </svg>
+          <span className="font-tech text-sm font-bold uppercase tracking-wider sm:text-base">TRACKING</span>
+        </span>
+      </button>
     </div>);
 
 };
