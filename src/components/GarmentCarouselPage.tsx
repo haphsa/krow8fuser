@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, Move, RotateCw, Send, Shirt } from 'lucide-react';
+import { ArrowLeft, ChevronDown, ChevronLeft, ChevronRight, Send, Shirt } from 'lucide-react';
 import { sfx } from './AudioSystem';
 
 interface GarmentSpecimen {
@@ -40,38 +40,59 @@ interface GarmentCarouselPageProps {
   onRequestQuote: (garmentName?: string) => void;
 }
 
+type GarmentFilter = 'all' | 'hoodies' | 'shirts' | 'pants' | 'jackets' | 'others';
+
+const getGarmentFilter = (garment: GarmentSpecimen): Exclude<GarmentFilter, 'all'> => {
+  if (garment.id.startsWith('hoodie-')) return 'hoodies';
+  if (garment.id.startsWith('tee-')) return 'shirts';
+  if (garment.id.startsWith('pants-')) return 'pants';
+  if (garment.id.startsWith('jacket-')) return 'jackets';
+  return 'others';
+};
+
 export const GarmentCarouselPage: React.FC<GarmentCarouselPageProps> = ({ onBack, onRequestQuote }) => {
   const [rotationAngle, setRotationAngle] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [garmentFilter, setGarmentFilter] = useState<GarmentFilter>('all');
   const dragStartX = useRef(0);
   const dragStartAngle = useRef(0);
   const radius = typeof window !== 'undefined' && window.innerWidth < 640 ? 170 : 320;
   const visibleAngleStep = 60;
+  const filteredSpecimens = garmentFilter === 'all'
+    ? GARMENT_SPECIMENS
+    : GARMENT_SPECIMENS.filter((garment) => getGarmentFilter(garment) === garmentFilter);
 
   const rotate = (direction: 1 | -1) => {
     sfx.playSwitchFeed();
     setRotationAngle(0);
-    setSelectedIndex((index) => (index + direction + GARMENT_SPECIMENS.length) % GARMENT_SPECIMENS.length);
+    setSelectedIndex((index) => (index + direction + filteredSpecimens.length) % filteredSpecimens.length);
   };
 
-  const selected = GARMENT_SPECIMENS[selectedIndex];
+  const selected = filteredSpecimens[selectedIndex];
 
   const isVisible = (index: number) => {
     const distance = Math.abs(index - selectedIndex);
-    const wrappedDistance = GARMENT_SPECIMENS.length - distance;
+    const wrappedDistance = filteredSpecimens.length - distance;
     return Math.min(distance, wrappedDistance) <= 1;
   };
 
   const getRelativeIndex = (index: number) => {
     let relativeIndex = index - selectedIndex;
-    if (relativeIndex > GARMENT_SPECIMENS.length / 2) relativeIndex -= GARMENT_SPECIMENS.length;
-    if (relativeIndex < -GARMENT_SPECIMENS.length / 2) relativeIndex += GARMENT_SPECIMENS.length;
+    if (relativeIndex > filteredSpecimens.length / 2) relativeIndex -= filteredSpecimens.length;
+    if (relativeIndex < -filteredSpecimens.length / 2) relativeIndex += filteredSpecimens.length;
     return relativeIndex;
   };
 
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    sfx.playSelect();
+    setGarmentFilter(event.target.value as GarmentFilter);
+    setSelectedIndex(0);
+    setRotationAngle(0);
+  };
+
   const handlePointerDown = (event: React.PointerEvent<HTMLElement>) => {
-    if ((event.target as HTMLElement).closest('button')) return;
+    if ((event.target as HTMLElement).closest('button, select')) return;
     dragStartX.current = event.clientX;
     dragStartAngle.current = rotationAngle;
     setIsDragging(true);
@@ -115,9 +136,21 @@ export const GarmentCarouselPage: React.FC<GarmentCarouselPageProps> = ({ onBack
             </div>
           </div>
         </div>
-        <div className="text-right font-mono text-[9px] tracking-[0.28em] text-[#00FFC2]/70 sm:text-xs">
-          <span className="hidden rounded border border-[#00FFC2]/30 bg-[#00FFC2]/10 px-2 py-1 sm:inline">3D CAROUSEL ACTIVE</span>
-          <span className="sm:hidden">DATASET {String(GARMENT_SPECIMENS.length).padStart(2, '0')}</span>
+        <div className="relative text-right font-mono text-[9px] tracking-[0.18em] text-[#00FFC2]/70 sm:text-xs">
+          <select
+            value={garmentFilter}
+            onChange={handleFilterChange}
+            aria-label="Filter garments by type"
+            className="w-[8.5rem] appearance-none border border-[#00FFC2]/40 bg-[#0A0D0F] px-3 py-2.5 pr-7 font-tech text-[11px] font-bold uppercase tracking-wider text-[#00FFC2] outline-none transition hover:border-[#00FFC2] focus:border-[#00FFC2] sm:w-[10rem] sm:text-xs"
+          >
+            <option value="all">ALL GARMENTS</option>
+            <option value="hoodies">HOODIES</option>
+            <option value="shirts">SHIRTS</option>
+            <option value="pants">PANTS</option>
+            <option value="jackets">JACKETS</option>
+            <option value="others">OTHERS</option>
+          </select>
+          <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-5 w-5 -translate-y-1/2 text-[#00FFC2] stroke-[2.5]" aria-hidden="true" />
         </div>
       </header>
 
@@ -132,15 +165,15 @@ export const GarmentCarouselPage: React.FC<GarmentCarouselPageProps> = ({ onBack
             <p className="mb-1 font-mono text-[10px] tracking-[0.3em] text-[#00FFC2]">// SPECIMEN ROTATION INDEX</p>
             <h1 className="font-display text-4xl font-black uppercase italic tracking-tight text-white sm:text-6xl">Projects</h1>
           </div>
-          <div className="hidden text-right font-mono text-xs text-[#EAEFEA]/50 sm:block">
-            <span className="text-[#00FFC2]">{String(selectedIndex + 1).padStart(2, '0')}</span> / {String(GARMENT_SPECIMENS.length).padStart(2, '0')}<br />
+          <div className="text-right font-mono text-[10px] text-[#EAEFEA]/50 sm:text-xs">
+            <span className="text-[#00FFC2]">{String(selectedIndex + 1).padStart(2, '0')}</span> / {String(filteredSpecimens.length).padStart(2, '0')}<br />
             SELECTED SPECIMEN
           </div>
         </div>
 
-        <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden">
-          <div className="absolute bottom-5 h-28 w-[min(80vw,720px)] rounded-[50%] border border-[#00FFC2]/40 shadow-[0_0_45px_rgba(0,255,194,0.12)]" />
-          <div className="absolute bottom-12 h-14 w-[min(55vw,480px)] rounded-[50%] border border-dashed border-[#00FFC2]/30" />
+        <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-visible">
+          <div className="pointer-events-none absolute bottom-5 z-0 h-28 w-[min(80vw,720px)] rounded-[50%] border border-[#00FFC2]/30 shadow-[0_0_45px_rgba(0,255,194,0.1)]" />
+          <div className="pointer-events-none absolute bottom-12 z-0 h-14 w-[min(55vw,480px)] rounded-[50%] border border-dashed border-[#00FFC2]/20" />
 
           <button type="button" onClick={() => rotate(-1)} onMouseEnter={() => sfx.playHover()} className="group absolute left-1 top-1/2 z-30 -translate-y-1/2 p-2.5 text-[#00FFC2] sm:left-5 sm:p-3.5" aria-label="Previous garment" title="Previous specimen">
             <span className="absolute inset-0 border-2 border-[#00FFC2]/70 bg-[#0A0D0F]/90 shadow-[0_0_30px_rgba(0,255,194,0.35)] transition group-hover:border-[#00FFC2] group-hover:bg-[#00FFC2] group-hover:shadow-[0_0_50px_rgba(0,255,194,0.8)]" />
@@ -159,8 +192,8 @@ export const GarmentCarouselPage: React.FC<GarmentCarouselPageProps> = ({ onBack
             <ChevronRight className="relative h-5 w-5 stroke-[3] transition group-hover:translate-x-1 sm:h-7 sm:w-7" />
           </button>
 
-          <div className="relative h-[64vh] w-full max-w-5xl -translate-y-32 sm:-translate-y-28" style={{ perspective: '1200px' }}>
-            {GARMENT_SPECIMENS.map((garment, index) => {
+          <div className="relative h-[64vh] w-full max-w-5xl -translate-y-14 sm:-translate-y-40" style={{ perspective: '1200px' }}>
+            {filteredSpecimens.map((garment, index) => {
               if (!isVisible(index)) return null;
 
               const itemAngle = rotationAngle + getRelativeIndex(index) * visibleAngleStep;
@@ -171,7 +204,7 @@ export const GarmentCarouselPage: React.FC<GarmentCarouselPageProps> = ({ onBack
               const isFront = depth > 0.76;
 
               return (
-                <button type="button" key={garment.id} onClick={() => { sfx.playSelect(); setSelectedIndex(index); setRotationAngle(0); }} className={`group absolute left-1/2 top-1/2 flex w-48 -translate-x-1/2 -translate-y-1/2 flex-col items-center will-change-transform sm:w-64 ${isDragging ? 'transition-none' : 'transition-[transform,opacity,filter] duration-1000 ease-[cubic-bezier(0.65,0,0.35,1)]'}`} style={{ transform: `translate3d(calc(-50% + ${Math.sin(radians) * radius}px), ${Math.sin(radians) * 12}px, ${z}px) scale(${scale})`, opacity: 0.3 + depth * 0.7, zIndex: Math.round(depth * 100) }}>
+                <button type="button" key={garment.id} onClick={() => { sfx.playSelect(); setSelectedIndex(index); setRotationAngle(0); }} className={`group absolute left-1/2 top-1/2 flex w-48 -translate-x-1/2 -translate-y-1/2 flex-col items-center will-change-transform sm:w-56 ${isDragging ? 'transition-none' : 'transition-[transform,opacity,filter] duration-1000 ease-[cubic-bezier(0.65,0,0.35,1)]'}`} style={{ transform: `translate3d(calc(-50% + ${Math.sin(radians) * radius}px), ${Math.sin(radians) * 12}px, ${z}px) scale(${scale})`, opacity: 0.3 + depth * 0.7, zIndex: Math.round(depth * 100) }}>
                   <img src={garment.image} alt={garment.name} className={`aspect-[4/5] w-full object-contain transition duration-300 ${isFront ? 'drop-shadow-[0_16px_28px_rgba(0,0,0,0.9)] group-hover:drop-shadow-[0_0_28px_rgba(0,255,194,0.6)]' : 'brightness-50 contrast-125'}`} />
                   {isFront && <span className="mt-[-3px] border border-[#00FFC2] bg-black/90 px-3 py-1 font-mono text-[9px] tracking-widest text-[#00FFC2]">{garment.name}</span>}
                 </button>
@@ -180,28 +213,13 @@ export const GarmentCarouselPage: React.FC<GarmentCarouselPageProps> = ({ onBack
           </div>
         </div>
 
-        <footer className="relative z-20 flex shrink-0 items-center justify-between gap-3 border-t border-[#00FFC2]/20 pt-3 sm:pt-4">
-          <div>
-            <div className="flex items-center gap-2 font-mono text-[9px] tracking-widest text-[#00FFC2]/70">
-              <Move className="h-3.5 w-3.5 animate-pulse" />
-              <span className="hidden sm:inline">USE BUTTONS OR DRAG TO ROTATE</span>
-              <span className="sm:hidden">DRAG TO ROTATE</span>
-            </div>
-            <p className="mt-1 font-mono text-[9px] tracking-widest text-[#00FFC2]/60">CURRENT SPECIMEN // {selected.id.toUpperCase()}</p>
-            <p className="mt-1 font-tech text-lg font-bold uppercase text-white sm:text-2xl">{selected.category}</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="text-right font-mono text-[9px] text-[#EAEFEA]/60 sm:text-xs">
-              FABRIC WEIGHT<br /><strong className="text-[#00FFC2]">{selected.gsm} GSM</strong>
-            </div>
-            <RotateCw className="hidden h-4 w-4 text-[#00FFC2] sm:block" />
-            <button type="button" onClick={() => { sfx.playSelect(); onRequestQuote(selected.name); }} onMouseEnter={() => sfx.playHover()} className="flex items-center gap-2 bg-[#00FFC2] px-3 py-2 font-tech text-[10px] font-bold uppercase tracking-wider text-black shadow-[0_0_15px_rgba(0,255,194,0.35)] transition hover:bg-[#00FFC2]/90 sm:px-4 sm:text-xs">
-              <Send className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">REQUEST TECH PACK QUOTE</span>
-              <span className="sm:hidden">QUOTE</span>
-            </button>
-          </div>
-        </footer>
+        <div className="fixed bottom-4 right-4 z-40 sm:bottom-5 sm:right-8">
+          <button type="button" onClick={() => { sfx.playSelect(); onRequestQuote(selected.name); }} onMouseEnter={() => sfx.playHover()} className="flex items-center gap-2 bg-[#00FFC2] px-3 py-2 font-tech text-[10px] font-bold uppercase tracking-wider text-black shadow-[0_0_15px_rgba(0,255,194,0.35)] transition hover:bg-[#00FFC2]/90 sm:px-4 sm:text-xs">
+            <Send className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">REQUEST TECH PACK QUOTE</span>
+            <span className="sm:hidden">QUOTE</span>
+          </button>
+        </div>
       </section>
     </main>
   );

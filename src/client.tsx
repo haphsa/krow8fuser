@@ -38,13 +38,18 @@ function LoadingMenuApp() {
 
   if (showProjects) {
     return (
-      <GarmentCarouselPage
-        onBack={() => setShowProjects(false)}
-        onRequestQuote={() => {
-          setShowProjects(false);
-          setActiveMenuId('contact');
-          setActiveModalItem(MENU_ITEMS.find((item) => item.id === 'contact') || null);
-        }} />
+      <>
+        <GarmentCarouselPage
+          onBack={() => setShowProjects(false)}
+          onRequestQuote={() => {
+            setActiveMenuId('contact');
+            setActiveModalItem(MENU_ITEMS.find((item) => item.id === 'contact') || null);
+          }} />
+        <InteractiveHudModal
+          item={activeModalItem}
+          onClose={() => setActiveModalItem(null)}
+        />
+      </>
     );
   }
 
