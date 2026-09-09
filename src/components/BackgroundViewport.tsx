@@ -98,8 +98,8 @@ export const BackgroundViewport: React.FC<BackgroundViewportProps> = ({
       {/* Cyber HUD Corner Brackets */}
       <div className="absolute top-3 left-3 sm:top-6 sm:left-6 w-4 h-4 sm:w-10 sm:h-10 border-t-2 border-l-2 border-[#00FFC2]/50 shadow-[0_0_10px_rgba(0,255,194,0.25)]" />
       <div className="absolute top-3 right-3 sm:top-6 sm:right-6 w-4 h-4 sm:w-10 sm:h-10 border-t-2 border-r-2 border-[#00FFC2]/50 shadow-[0_0_10px_rgba(0,255,194,0.25)]" />
-      <div className="absolute bottom-20 left-3 sm:bottom-28 sm:left-6 w-4 h-4 sm:w-10 sm:h-10 border-b-2 border-l-2 border-[#00FFC2]/50 shadow-[0_0_10px_rgba(0,255,194,0.25)]" />
-      <div className="absolute bottom-20 right-3 sm:bottom-28 sm:right-6 w-4 h-4 sm:w-10 sm:h-10 border-b-2 border-r-2 border-[#00FFC2]/50 shadow-[0_0_10px_rgba(0,255,194,0.25)]" />
+      {/* <div className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 w-4 h-4 sm:w-10 sm:h-10 border-b-2 border-l-2 border-[#00FFC2]/50 shadow-[0_0_10px_rgba(0,255,194,0.25)]" /> */}
+      <div className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 w-4 h-4 sm:w-10 sm:h-10 border-b-2 border-r-2 border-[#00FFC2]/50 shadow-[0_0_10px_rgba(0,255,194,0.25)]" />
     </div>
   );
 };
