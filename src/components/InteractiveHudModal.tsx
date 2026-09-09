@@ -8,34 +8,81 @@ interface InteractiveHudModalProps {
   onClose: () => void;
 }
 
+type RequiredField = 'company' | 'phone' | 'email';
+
 export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
   item,
   onClose
 }) => {
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<RequiredField, string>>>({});
   const [techPackFile, setTechPackFile] = useState<string | null>(null);
 
   if (!item) return null;
 
-  const handleSubmitQuote = (e: React.FormEvent) => {
+  const clearFieldError = (field: RequiredField) => {
+    setFieldErrors((currentErrors) => {
+      if (!currentErrors[field]) return currentErrors;
+      return { ...currentErrors, [field]: undefined };
+    });
+  };
+
+  const handleSubmitQuote = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     sfx.playSelect();
 
-    const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const subject = `Production Quote Request - ${formData.get('company')}`;
-    const body = [
-      `Brand / Company: ${formData.get('company')}`,
-      `Contact Email: ${formData.get('email')}`,
-      `Phone Number: ${formData.get('phone')}`,
-      `Target Quantity: ${formData.get('quantity')}`,
-      `Tech Pack Status: ${formData.get('techPackStatus')}`,
-      '',
-      'Garment Specs & Notes:',
-      formData.get('notes')
-    ].join('\n');
+    setFormError(null);
 
-    window.location.href = `mailto:krow8industries@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setFormSubmitted(true);
+    const formData = new FormData(e.currentTarget);
+    const company = String(formData.get('company') || '').trim();
+    const phone = String(formData.get('phone') || '').trim();
+    const email = String(formData.get('email') || '').trim();
+    const errors: Partial<Record<RequiredField, string>> = {};
+
+    if (!company) errors.company = 'Organization name is required.';
+    if (!phone) errors.phone = 'Contact number is required.';
+    if (!email) {
+      errors.email = 'Email address is required.';
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+      errors.email = 'Enter a valid email address.';
+    }
+
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
+    setIsSubmitting(true);
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+
+    if (!accessKey) {
+      setFormError('The inquiry service is not configured. Please try again later.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    formData.append('access_key', accessKey);
+    formData.append('subject', `Production Quote Request - ${formData.get('company')}`);
+    formData.append('from_name', 'KROW8 Industries Website');
+    formData.append('botcheck', '');
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+      const result = await response.json() as { success?: boolean; message?: string };
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Unable to submit inquiry.');
+      }
+
+      setFormSubmitted(true);
+    } catch (error) {
+      setFormError(error instanceof Error ? error.message : 'Unable to submit inquiry. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -205,7 +252,7 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
                   PRODUCTION SLOT INQUIRY RECEIVED
                 </div>
                 <p data-fuser-slot-id="section-body-05e4dfd9" className="text-sm text-[#EAEFEA]/80 max-w-md mx-auto">
-                  Our garment engineers will review your Tech Pack specs and send a custom quote within 24 hours.
+                  We will reach out to your provided contact information within 24-48 hours to discuss your production requirements and provide a detailed quote.
                 </p>
                 <button
               onClick={() => setFormSubmitted(false)}
@@ -215,18 +262,23 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
                 </button>
               </div> :
 
-          <form onSubmit={handleSubmitQuote} className="space-y-3">
+          <form onSubmit={handleSubmitQuote} noValidate className="space-y-3">
                 <div>
                   <div>
                     <label data-fuser-slot-id="section-label-e80fdbfd" className="block text-xs font-mono text-[#EAEFEA]/70 mb-1">
-                      Organization Name
+                      Organization Name <span className="text-[#00FFC2]" aria-hidden="true">*</span>
                     </label>
                     <input
                   type="text"
                   name="company"
                   required
+                  aria-required="true"
+                  aria-invalid={Boolean(fieldErrors.company)}
+                  aria-describedby={fieldErrors.company ? 'company-error' : undefined}
+                  onChange={() => clearFieldError('company')}
                   placeholder="e.g. KROW8 APPAREL"
-                  className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none" />
+                  className={`w-full px-3 py-2 rounded-lg bg-black/80 border text-[#EAEFEA] text-sm focus:outline-none ${fieldErrors.company ? 'border-red-500 focus:border-red-500' : 'border-[#00FFC2]/30 focus:border-[#00FFC2]'}`} />
+                    {fieldErrors.company && <p id="company-error" className="mt-1 text-xs text-red-400">{fieldErrors.company}</p>}
                 
                   </div>
                 </div>
@@ -234,25 +286,35 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label data-fuser-slot-id="section-label-phone" className="block text-xs font-mono text-[#EAEFEA]/70 mb-1">
-                      Phone Number
+                      Phone Number <span className="text-[#00FFC2]" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="tel"
                       name="phone"
                       required
+                      aria-required="true"
+                      aria-invalid={Boolean(fieldErrors.phone)}
+                      aria-describedby={fieldErrors.phone ? 'phone-error' : undefined}
+                      onChange={() => clearFieldError('phone')}
                       placeholder="e.g. +1 555 123 4567"
-                      className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none" />
+                      className={`w-full px-3 py-2 rounded-lg bg-black/80 border text-[#EAEFEA] text-sm focus:outline-none ${fieldErrors.phone ? 'border-red-500 focus:border-red-500' : 'border-[#00FFC2]/30 focus:border-[#00FFC2]'}`} />
+                    {fieldErrors.phone && <p id="phone-error" className="mt-1 text-xs text-red-400">{fieldErrors.phone}</p>}
                   </div>
                   <div>
                     <label data-fuser-slot-id="section-label-455ba91e" className="block text-xs font-mono text-[#EAEFEA]/70 mb-1">
-                      Contact Email
+                      Contact Email <span className="text-[#00FFC2]" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="email"
                       name="email"
                       required
+                      aria-required="true"
+                      aria-invalid={Boolean(fieldErrors.email)}
+                      aria-describedby={fieldErrors.email ? 'email-error' : undefined}
+                      onChange={() => clearFieldError('email')}
                       placeholder="you@brand.com"
-                      className="w-full px-3 py-2 rounded-lg bg-black/80 border border-[#00FFC2]/30 text-[#EAEFEA] text-sm focus:border-[#00FFC2] focus:outline-none" />
+                      className={`w-full px-3 py-2 rounded-lg bg-black/80 border text-[#EAEFEA] text-sm focus:outline-none ${fieldErrors.email ? 'border-red-500 focus:border-red-500' : 'border-[#00FFC2]/30 focus:border-[#00FFC2]'}`} />
+                    {fieldErrors.email && <p id="email-error" className="mt-1 text-xs text-red-400">{fieldErrors.email}</p>}
                   </div>
                 </div>
 
@@ -298,13 +360,20 @@ export const InteractiveHudModal: React.FC<InteractiveHudModalProps> = ({
               
                 </div>
 
+                {formError && (
+                  <p role="alert" className="text-sm text-red-300" data-fuser-slot-id="section-form-error">
+                    {formError}
+                  </p>
+                )}
+
                 <button data-fuser-slot-id="section-button-text-790123c5"
             type="submit"
+            disabled={isSubmitting}
             onMouseEnter={() => sfx.playHover()}
-            className="w-full py-3 rounded-xl bg-[#00FFC2] text-black font-tech font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#00FFC2]/90 transition-all shadow-[0_0_20px_rgba(0,255,194,0.4)] cursor-pointer">
+            className="w-full py-3 rounded-xl bg-[#00FFC2] text-black font-tech font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-2 hover:bg-[#00FFC2]/90 transition-all shadow-[0_0_20px_rgba(0,255,194,0.4)] cursor-pointer disabled:cursor-not-allowed disabled:opacity-60">
               
                   <Send className="w-4 h-4" />
-                  REQUEST PRODUCTION QUOTE
+                  {isSubmitting ? 'TRANSMITTING INQUIRY...' : 'REQUEST PRODUCTION QUOTE'}
                 </button>
               </form>
           }
