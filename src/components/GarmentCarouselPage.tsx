@@ -47,11 +47,11 @@ export const GarmentCarouselPage: React.FC<GarmentCarouselPageProps> = ({ onBack
   const dragStartX = useRef(0);
   const dragStartAngle = useRef(0);
   const radius = typeof window !== 'undefined' && window.innerWidth < 640 ? 170 : 320;
-  const angleStep = 360 / GARMENT_SPECIMENS.length;
+  const visibleAngleStep = 60;
 
   const rotate = (direction: 1 | -1) => {
     sfx.playSwitchFeed();
-    setRotationAngle((angle) => angle - direction * angleStep);
+    setRotationAngle(0);
     setSelectedIndex((index) => (index + direction + GARMENT_SPECIMENS.length) % GARMENT_SPECIMENS.length);
   };
 
@@ -60,7 +60,14 @@ export const GarmentCarouselPage: React.FC<GarmentCarouselPageProps> = ({ onBack
   const isVisible = (index: number) => {
     const distance = Math.abs(index - selectedIndex);
     const wrappedDistance = GARMENT_SPECIMENS.length - distance;
-    return Math.min(distance, wrappedDistance) <= 3;
+    return Math.min(distance, wrappedDistance) <= 1;
+  };
+
+  const getRelativeIndex = (index: number) => {
+    let relativeIndex = index - selectedIndex;
+    if (relativeIndex > GARMENT_SPECIMENS.length / 2) relativeIndex -= GARMENT_SPECIMENS.length;
+    if (relativeIndex < -GARMENT_SPECIMENS.length / 2) relativeIndex += GARMENT_SPECIMENS.length;
+    return relativeIndex;
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLElement>) => {
@@ -79,9 +86,9 @@ export const GarmentCarouselPage: React.FC<GarmentCarouselPageProps> = ({ onBack
 
   const handlePointerUp = (event: React.PointerEvent<HTMLElement>) => {
     if (!isDragging) return;
-    const snappedAngle = Math.round(rotationAngle / angleStep) * angleStep;
-    const frontIndex = ((Math.round(-snappedAngle / angleStep) % GARMENT_SPECIMENS.length) + GARMENT_SPECIMENS.length) % GARMENT_SPECIMENS.length;
-    setRotationAngle(snappedAngle);
+    const snappedAngle = Math.round(rotationAngle / visibleAngleStep) * visibleAngleStep;
+    const frontIndex = ((Math.round(-snappedAngle / visibleAngleStep) + selectedIndex) % GARMENT_SPECIMENS.length + GARMENT_SPECIMENS.length) % GARMENT_SPECIMENS.length;
+    setRotationAngle(0);
     setSelectedIndex(frontIndex);
     setIsDragging(false);
     event.currentTarget.releasePointerCapture(event.pointerId);
@@ -156,7 +163,7 @@ export const GarmentCarouselPage: React.FC<GarmentCarouselPageProps> = ({ onBack
             {GARMENT_SPECIMENS.map((garment, index) => {
               if (!isVisible(index)) return null;
 
-              const itemAngle = rotationAngle + index * angleStep;
+              const itemAngle = rotationAngle + getRelativeIndex(index) * visibleAngleStep;
               const radians = itemAngle * Math.PI / 180;
               const z = Math.cos(radians) * radius;
               const depth = (z + radius) / (2 * radius);
@@ -164,7 +171,7 @@ export const GarmentCarouselPage: React.FC<GarmentCarouselPageProps> = ({ onBack
               const isFront = depth > 0.76;
 
               return (
-                <button type="button" key={garment.id} onClick={() => { sfx.playSelect(); setSelectedIndex(index); setRotationAngle(-index * angleStep); }} className={`group absolute left-1/2 top-1/2 flex w-48 -translate-x-1/2 -translate-y-1/2 flex-col items-center will-change-transform sm:w-64 ${isDragging ? 'transition-none' : 'transition-[transform,opacity] duration-700 ease-out'}`} style={{ transform: `translate3d(calc(-50% + ${Math.sin(radians) * radius}px), ${Math.sin(radians) * 12}px, ${z}px) scale(${scale})`, opacity: 0.3 + depth * 0.7, zIndex: Math.round(depth * 100) }}>
+                <button type="button" key={garment.id} onClick={() => { sfx.playSelect(); setSelectedIndex(index); setRotationAngle(0); }} className={`group absolute left-1/2 top-1/2 flex w-48 -translate-x-1/2 -translate-y-1/2 flex-col items-center will-change-transform sm:w-64 ${isDragging ? 'transition-none' : 'transition-[transform,opacity,filter] duration-1000 ease-[cubic-bezier(0.65,0,0.35,1)]'}`} style={{ transform: `translate3d(calc(-50% + ${Math.sin(radians) * radius}px), ${Math.sin(radians) * 12}px, ${z}px) scale(${scale})`, opacity: 0.3 + depth * 0.7, zIndex: Math.round(depth * 100) }}>
                   <img src={garment.image} alt={garment.name} className={`aspect-[4/5] w-full object-contain transition duration-300 ${isFront ? 'drop-shadow-[0_16px_28px_rgba(0,0,0,0.9)] group-hover:drop-shadow-[0_0_28px_rgba(0,255,194,0.6)]' : 'brightness-50 contrast-125'}`} />
                   {isFront && <span className="mt-[-3px] border border-[#00FFC2] bg-black/90 px-3 py-1 font-mono text-[9px] tracking-widest text-[#00FFC2]">{garment.name}</span>}
                 </button>
