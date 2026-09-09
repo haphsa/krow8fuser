@@ -33,14 +33,28 @@ export const BackgroundViewport: React.FC<BackgroundViewportProps> = ({
     <div className="absolute inset-0 z-0 overflow-hidden bg-[#080A0B] select-none pointer-events-none">
       {/* Background Factory Process Stream Visual with Zoom/Pan Motion */}
       <div className="absolute inset-0 transition-opacity duration-700 ease-in-out">
-        <img
-          key={currentFeed.id}
-          src={currentFeed.imgUrl}
-          alt={currentFeed.title}
-          className={`h-full w-full object-cover object-center filter contrast-125 brightness-90 transition-all duration-1000 transform ${
-            isPlaying ? 'scale-105 transition-transform duration-[10000ms]' : 'scale-100'
-          }`}
-        />
+        {currentFeed.videoUrl ? (
+          <video
+            key={`video-${currentFeed.id}`}
+            src={currentFeed.videoUrl}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className={`h-full w-full object-cover object-center filter contrast-125 brightness-90 transition-all duration-1000 transform ${
+              isPlaying ? 'scale-105 transition-transform duration-[10000ms]' : 'scale-100'
+            }`}
+          />
+        ) : (
+          <img
+            key={`image-${currentFeed.id}`}
+            src={currentFeed.imgUrl}
+            alt={currentFeed.title}
+            className={`h-full w-full object-cover object-center filter contrast-125 brightness-90 transition-all duration-1000 transform ${
+              isPlaying ? 'scale-105 transition-transform duration-[10000ms]' : 'scale-100'
+            }`}
+          />
+        )}
       </div>
 
       {/* Cyber/Tactical Cyan Ambient Light Leaks */}

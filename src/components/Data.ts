@@ -4,6 +4,7 @@ export interface FeedItem {
   title: string;
   subtitle: string;
   imgUrl: string;
+  videoUrl?: string;
   videoDesc: string;
   details: {
     stat1: string;
@@ -33,7 +34,8 @@ export const FACTORY_FEEDS: FeedItem[] = [
     code: 'CAM_01',
     title: 'PRECISION STITCHING',
     subtitle: 'AUTOMATED SEWING MATRIX // HEAVY-DUTY LOCKSTITCH',
-    imgUrl: '/__fuser/media/hero-sewing',
+    imgUrl: '/assets/garmentprojects/tee2.png',
+    videoUrl: '/assets/precisionstitching.mov',
     videoDesc: 'High-speed automated lockstitch machine assembling 14oz raw selvedge denim panels with 100% bonded nylon thread.',
     details: {
       stat1: 'RPM: 3,800',
@@ -47,7 +49,8 @@ export const FACTORY_FEEDS: FeedItem[] = [
     code: 'CAM_02',
     title: 'RAW TEXTILE MATRIX',
     subtitle: 'SPECTRUM INVENTORY // GOTS ORGANIC COTTON & LINEN',
-    imgUrl: '/__fuser/media/thumb-fabric-rolls',
+    imgUrl: '/assets/garmentprojects/jacket2.png',
+    videoUrl: '/assets/rawtextilematrix.mp4',
     videoDesc: 'Climate-controlled textile vault housing custom mill knits, 400GSM french terry, and technical ripstop textiles.',
     details: {
       stat1: 'INVENTORY: 85,000M',
@@ -61,7 +64,8 @@ export const FACTORY_FEEDS: FeedItem[] = [
     code: 'CAM_03',
     title: 'LASER PATTERN CUTTING',
     subtitle: 'CNC OPTICAL CUTTING TABLE // ZERO LASER DISTORTION',
-    imgUrl: '/__fuser/media/thumb-pattern-cut',
+    imgUrl: '/assets/garmentprojects/pants3.png',
+    videoUrl: '/assets/laserpatterncutting.mov',
     videoDesc: 'Dual-head CO2 laser cutting system nesting tech packs onto multi-ply fabric sheets with 99.4% material yield.',
     details: {
       stat1: 'CUT SPEED: 1,200mm/s',
@@ -75,7 +79,8 @@ export const FACTORY_FEEDS: FeedItem[] = [
     code: 'CAM_04',
     title: 'CUSTOM DYE & YARN LAB',
     subtitle: 'PANTONE MATCHING SYSTEM // CLOSED-LOOP DYEING',
-    imgUrl: '/__fuser/media/thumb-thread-spools',
+    imgUrl: '/assets/garmentprojects/hoodie3.png',
+    videoUrl: '/assets/customdyeandyarn.mov',
     videoDesc: 'Precision color formulation laboratory producing custom garment washes, pigment dyes, and reactive thread colors.',
     details: {
       stat1: 'COLOR DELTA: < 0.3',
@@ -89,7 +94,7 @@ export const FACTORY_FEEDS: FeedItem[] = [
     code: 'CAM_05',
     title: 'FINISHING & ASSEMBLY LINE',
     subtitle: 'OVERHEAD CONVEYOR MATRIX // QUALITY CHECKPOINTS',
-    imgUrl: '/__fuser/media/thumb-finishing-line',
+    imgUrl: '/assets/garmentprojects/jacket4back.png',
     videoDesc: 'Continuous monorail conveyor carrying assembled outerwear garments through steam-tunnel presses and hardware attachment.',
     details: {
       stat1: 'LINE SPEED: 450 units/hr',
@@ -103,7 +108,7 @@ export const FACTORY_FEEDS: FeedItem[] = [
     code: 'CAM_06',
     title: 'MASTER GARMENT SHOWCASE',
     subtitle: 'FINISHED SPECIMEN // APPAREL ARCHITECTURE',
-    imgUrl: '/__fuser/media/thumb-final-garment',
+    imgUrl: '/assets/garmentprojects/tee4.png',
     videoDesc: 'Finished specimen 06: Heavyweight drop-shoulder tee with reinforced rib collar and custom silicone brand neck tape.',
     details: {
       stat1: 'FABRIC: 320GSM ORGANIC',

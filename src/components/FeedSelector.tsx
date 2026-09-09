@@ -51,7 +51,18 @@ export const FeedSelector: React.FC<FeedSelectorProps> = ({
                 'border border-white/20 bg-[#0A0D0F]/80 opacity-75 hover:border-white/60 hover:opacity-100'}`
               }>
               
-              {/* Thumbnail Image */}
+              {/* Thumbnail Video/Image */}
+              {feed.videoUrl ? (
+                <video
+                  key={`feed-video-${feed.id}`}
+                  src={feed.videoUrl}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover filter contrast-125 brightness-90 group-hover:brightness-100 transition-all duration-300"
+                />
+              ) : (
               <img
                 data-fuser-slot-id={{ "1": "img-url-image-0ab3c07b", "2": "img-url-image-d24c51b0", "3": "img-url-image-e6474dd9", "4": "img-url-image-e8ded836", "5": "img-url-image-a862ba09", "6": "img-url-image-c4c4542c" }[feed.id]}
 
@@ -66,6 +77,7 @@ export const FeedSelector: React.FC<FeedSelectorProps> = ({
                 src={feed.imgUrl}
                 alt={feed.title}
                 className="w-full h-full object-cover filter contrast-125 brightness-90 group-hover:brightness-100 transition-all duration-300" />
+              )}
               
 
               {/* Dark Translucent Overlay */}
