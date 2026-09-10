@@ -9,6 +9,7 @@ interface HeaderNavProps {
 export const HeaderNav: React.FC<HeaderNavProps> = ({ muted, onToggleMute }) => {
   const instagramUrl = 'https://instagram.com';
   const whatsappUrl = 'https://wa.me/923129220763?text=' + encodeURIComponent('Hey! I\'m interested in your services.');
+  const gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1&to=krow8industries@gmail.com';
 
   return (
     <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-8 py-2.5 sm:py-6 w-full pointer-events-auto">
@@ -62,6 +63,21 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ muted, onToggleMute }) => 
           aria-label="WhatsApp">
           <svg className="w-4 h-4 sm:w-5 sm:h-5 fill-current transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24">
             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.285-.143-1.686-.832-1.947-.928-.261-.095-.451-.143-.641.143-.19.285-.736.928-.902 1.118-.166.19-.332.214-.618.071-.285-.143-1.205-.444-2.296-1.417-.849-.757-1.423-1.692-1.589-1.977-.166-.285-.018-.439.125-.581.128-.128.285-.332.428-.499.143-.166.19-.285.285-.476.095-.19.048-.356-.024-.499-.071-.143-.641-1.545-.878-2.103-.231-.544-.467-.47-.641-.479-.166-.009-.356-.01-.546-.01-.19 0-.499.071-.76.356-.261.285-.998.975-.998 2.38 0 1.403 1.022 2.758 1.164 2.948.143.19 2.012 3.073 4.876 4.223.681.273 1.213.437 1.628.536.684.163 1.306.14 1.798.068.549-.08 1.686-.689 1.924-1.354.238-.665.238-1.235.166-1.354-.071-.072-.261-.167-.546-.31z"/>
+          </svg>
+        </a>
+
+        <a
+          href={gmailUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => sfx.playSelect()}
+          onMouseEnter={() => sfx.playHover()}
+          className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl border border-[#00FFC2]/40 hover:border-[#00FFC2] bg-[#0C0E0D]/90 hover:bg-[#00FFC2]/20 text-[#00FFC2] transition-all duration-200 focus:outline-none cursor-pointer flex items-center justify-center group backdrop-blur-md shadow-[0_0_15px_rgba(0,255,194,0.15)]"
+          title="Gmail"
+          aria-label="Compose an email with Gmail">
+          <svg className="w-4 h-4 sm:w-5 sm:h-5 fill-none stroke-current transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" strokeWidth="2">
+            <path d="M4 4h16v16H4z" />
+            <path d="m4 5 8 6 8-6" />
           </svg>
         </a>
       </div>
