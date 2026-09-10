@@ -9,7 +9,6 @@ interface HeaderNavProps {
 export const HeaderNav: React.FC<HeaderNavProps> = ({ muted, onToggleMute }) => {
   const instagramUrl = 'https://instagram.com';
   const whatsappUrl = 'https://wa.me/923129220763?text=' + encodeURIComponent('Hey! I\'m interested in your services.');
-  const gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1&to=krow8industries@gmail.com';
 
   return (
     <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-3 sm:px-8 py-2.5 sm:py-6 w-full pointer-events-auto">
@@ -66,20 +65,6 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ muted, onToggleMute }) => 
           </svg>
         </a>
 
-        <a
-          href={gmailUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => sfx.playSelect()}
-          onMouseEnter={() => sfx.playHover()}
-          className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl border border-[#00FFC2]/40 hover:border-[#00FFC2] bg-[#0C0E0D]/90 hover:bg-[#00FFC2]/20 text-[#00FFC2] transition-all duration-200 focus:outline-none cursor-pointer flex items-center justify-center group backdrop-blur-md shadow-[0_0_15px_rgba(0,255,194,0.15)]"
-          title="Gmail"
-          aria-label="Compose an email with Gmail">
-          <svg className="w-4 h-4 sm:w-5 sm:h-5 fill-none stroke-current transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" strokeWidth="2">
-            <path d="M4 4h16v16H4z" />
-            <path d="m4 5 8 6 8-6" />
-          </svg>
-        </a>
       </div>
     </div>
   );

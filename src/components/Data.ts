@@ -21,11 +21,12 @@ export interface MenuItem {
 }
 
 export const MENU_ITEMS: MenuItem[] = [
+    { id: 'about', label: 'ABOUT', subtitle: 'KROW8 Industries // Apparel Manufacturing Partner' },
   { id: 'services', label: 'SERVICES', subtitle: 'Full-Spectrum Apparel Manufacturing & Decoration. One Complete Production Partner' },
   { id: 'collections', label: 'PROJECTS', subtitle: 'Sample Garment Lines, Heavyweights & Tech Packs' },
-  { id: 'capabilities', label: 'CAPABILITIES', subtitle: 'Capacity, Laser CNC, Custom Dye & Machinery Specs' },
   // { id: 'sustainability', label: 'SUSTAINABILITY', subtitle: 'Closed-Loop Dyeing, GOTS Cotton & Zero Waste' },
   { id: 'contact', label: 'CONTACT', subtitle: 'Inquire Production Slot / Request Tech Pack Quote' },
+  { id: 'tracking', label: 'TRACKING', subtitle: 'Track Your Production Order' },
 ];
 
 export const FACTORY_FEEDS: FeedItem[] = [

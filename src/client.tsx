@@ -9,6 +9,7 @@ import { FeedSelector } from './components/FeedSelector';
 import { InteractiveHudModal } from './components/InteractiveHudModal';
 import { TrackOrderModal } from './components/TrackOrderModal';
 import { GarmentCarouselPage } from './components/GarmentCarouselPage';
+import { AboutPage } from './components/AboutPage';
 import { sfx } from './components/AudioSystem';
 
 function LoadingMenuApp() {
@@ -16,6 +17,7 @@ function LoadingMenuApp() {
   const [activeMenuId, setActiveMenuId] = useState<string>('process');
   const [activeModalItem, setActiveModalItem] = useState<MenuItem | null>(null);
   const [showProjects, setShowProjects] = useState<boolean>(false);
+  const [showAbout, setShowAbout] = useState<boolean>(false);
   const [showTrackOrder, setShowTrackOrder] = useState<boolean>(false);
   const [muted, setMuted] = useState<boolean>(false);
 
@@ -30,14 +32,33 @@ function LoadingMenuApp() {
   const handleSelectMenu = (item: MenuItem) => {
     setShowTrackOrder(false);
     setActiveMenuId(item.id);
+    if (item.id === 'about') {
+      setActiveModalItem(null);
+      setShowProjects(false);
+      setShowAbout(true);
+      return;
+    }
+    if (item.id === 'tracking') {
+      setActiveModalItem(null);
+      setShowAbout(false);
+      setShowProjects(false);
+      setShowTrackOrder(true);
+      return;
+    }
     if (item.id === 'collections') {
       setActiveModalItem(null);
+      setShowAbout(false);
       setShowProjects(true);
       return;
     }
+    setShowAbout(false);
     setShowProjects(false);
     setActiveModalItem(item);
   };
+
+  if (showAbout) {
+    return <AboutPage onBack={() => setShowAbout(false)} />;
+  }
 
   if (showProjects) {
     return (
@@ -68,7 +89,6 @@ function LoadingMenuApp() {
       <MenuSidebar
         activeMenuId={activeMenuId}
         onSelectMenu={handleSelectMenu}
-        onTrackOrder={() => setShowTrackOrder(true)}
       />
 
       {/* Bottom Process Stream Thumbnails Bar & Timeline Slider */}
